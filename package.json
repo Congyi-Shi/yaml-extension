@@ -1,21 +1,35 @@
 {
-  "name": "getyaml",
-  "displayName": "getyaml",
+  "name": "tdsGetyaml",
+  "displayName": "tdsGetyaml",
   "description": "yaml quick replace version 0.0.1",
   "version": "0.0.1",
+  "publisher": "congyiII",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Congyi-Shi/yaml-extension"
+  },
   "engines": {
-    "vscode": "^1.85.0"
+    "vscode": "^1.74.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onCommand:extension.getI18n"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "getyaml.getyaml",
-        "title": "get yaml"
+        "command": "extension.getI18n",
+        "title": "get i18n"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "extension.getI18n",
+        "key": "shift+ctrl+l",
+        "mac": "shift+cmd+l"
       }
     ]
   },

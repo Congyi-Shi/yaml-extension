@@ -22,12 +22,13 @@ function convertToPathKeys(obj: PathKeys, path = "") {
         result[newPath] = value;
       }
     }
+    5;
   }
   return result;
 }
 
-function createMapDict(pathKeys: PathKeys) {
-  const mapDict: PathKeys = {};
+function createMapDict(pathKeys: PathKeys, dic: PathKeys) {
+  const mapDict: PathKeys = dic;
   for (const key in pathKeys) {
     if (mapDict[pathKeys[key]]) {
       mapDict[pathKeys[key]].push(key);
@@ -51,8 +52,11 @@ function readYamlFiles() {
         }
         try {
           const yamlData = yaml.load(data);
-          const dictMap = createMapDict(convertToPathKeys(yamlData));
-          objectCache = { ...objectCache, ...dictMap };
+          const dictMap = createMapDict(
+            convertToPathKeys(yamlData),
+            objectCache
+          );
+          // objectCache = { ...objectCache, ...dictMap };
           console.log("yaml files read and cached");
           console.log(objectCache);
         } catch (e) {
@@ -73,6 +77,8 @@ function findKeyValuePairsInCache(selectedText: string) {
 }
 
 function showDropdown(selectedText: string, selection: vscode.Range) {
+  console.log(selectedText);
+  if (!selectedText || !selectedText.length) return;
   const options = findKeyValuePairsInCache(selectedText);
   const position = new vscode.Position(
     selection.end.line,
@@ -122,7 +128,7 @@ class MyAutoCompletionProvider implements vscode.CompletionItemProvider {
 export function activate(context: vscode.ExtensionContext) {
   // Use the console to output diagnostic information (console.log) and errors (console.error)
   // This line of code will only be executed once when your extension is activated
-  console.log('Congratulations, your extension "getyaml" is now active!');
+  console.log('Congratulations, your extension "getI18n" is now active!');
 
   let ca = vscode.window.onDidChangeTextEditorSelection((event) => {
     const editor = event.textEditor;
@@ -131,17 +137,19 @@ export function activate(context: vscode.ExtensionContext) {
     showDropdown(selectedText, selection);
   });
 
-  // let disposable = vscode.commands.registerCommand("getyaml.getyaml", () => {
-  //   const editor = vscode.window.activeTextEditor;
-  //   if (editor) {
-  //     const selection = editor.selection;
-  //     const selectedText = editor.document.getText(selection);
-  //     showDropdown(selectedText);
-  //     // findKeyValuePairsInCache(selectedText);
-  //   }
-  // });
+  let disposable = vscode.commands.registerCommand("extension.getI18n", () => {
+    const editor = vscode.window.activeTextEditor;
+    if (editor) {
+      const selection = editor.selection;
+      const selectedText = editor.document.getText(selection);
+      if (selection && selectedText && selectedText.length) {
+        showDropdown(selectedText, selection);
+        findKeyValuePairsInCache(selectedText);
+      }
+    }
+  });
   readYamlFiles();
-  context.subscriptions.push(ca);
+  context.subscriptions.push(disposable);
 }
 
 // This method is called when your extension is deactivated
