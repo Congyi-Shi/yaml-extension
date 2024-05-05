@@ -2,14 +2,14 @@
   "name": "tdsGetyaml",
   "displayName": "tdsGetyaml",
   "description": "yaml quick replace version 0.0.1",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "congyiII",
   "repository": {
     "type": "git",
     "url": "https://github.com/Congyi-Shi/yaml-extension"
   },
   "engines": {
-    "vscode": "^1.74.0"
+    "vscode": "^1.85.0"
   },
   "categories": [
     "Other"
@@ -55,6 +55,7 @@
   },
   "dependencies": {
     "js-yaml": "^4.1.0",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "vsce": "^2.15.0"
   }
 }

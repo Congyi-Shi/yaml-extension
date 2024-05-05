@@ -130,6 +130,14 @@ export function activate(context: vscode.ExtensionContext) {
   // This line of code will only be executed once when your extension is activated
   console.log('Congratulations, your extension "getI18n" is now active!');
 
+  const yamlWatcher = vscode.workspace.createFileSystemWatcher("**/*.yaml");
+
+  yamlWatcher.onDidChange(async (uri) => {
+    await readYamlFiles();
+  });
+
+  context.subscriptions.push(yamlWatcher);
+
   let ca = vscode.window.onDidChangeTextEditorSelection((event) => {
     const editor = event.textEditor;
     const selection = editor.selection;
